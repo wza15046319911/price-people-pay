@@ -14,9 +14,7 @@ function Login() {
     try {
       setError('')
       const response = await loginService(username, password);
-      
-      login(response.data.token)
-      
+      login(response.token)
       navigate('/home')
     } catch (err) {
       setError('Login failed, please check your username and password')
