@@ -11,7 +11,7 @@ function Login() {
   const handleLogin = async () => {
     try {
       setError('')
-      const response = await axios.post(`https://price-people-pay-backend.vercel.app/login`, {
+      const response = await axios.post(`${process.env.API_BASE_URL}login`, {
         username,
         password
       })
@@ -20,7 +20,7 @@ function Login() {
       localStorage.setItem('token', response.data.token)
       
       // 登录成功后跳转到首页
-      navigate('/')
+      navigate('/home')
     } catch (err) {
       setError('Login failed, please check your username and password')
       console.error('Login error:', err)
