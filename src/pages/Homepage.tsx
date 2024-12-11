@@ -16,7 +16,7 @@ interface CarRecord {
   price: number;
 }
 
-// Format date function
+// 添加日期格式化函数
 const formatDate = (dateString: string) => {
   const date = new Date(dateString);
   return date.toLocaleDateString('en-US', {
@@ -25,56 +25,56 @@ const formatDate = (dateString: string) => {
   });
 }
 
-// Define fetch function
+// 定义请求函数
 async function fetchCars(url: string) {
   try {
     const response = await axios.get(url)
-    // axios returns data directly in response.data
+    // axios 直接返回数据在 response.data 中
     return response.data
   } catch (error) {
-    throw new Error('Failed to fetch vehicle data')
+    throw new Error('获取车辆数据失败')
   }
 }
 
-// Add token check function
+// 添加 token 检查函数
 const checkToken = () => {
   const token = localStorage.getItem('token')
   if (!token) return false
 
   try {
-    // Parse token (assuming JWT format)
+    // 解析 token（假设是 JWT 格式）
     const tokenData = JSON.parse(atob(token.split('.')[1]))
-    const expirationTime = tokenData.exp * 1000 // Convert to milliseconds
+    const expirationTime = tokenData.exp * 1000 // 转换为毫秒
     
-    // Check if expired
+    // 检查是否过期
     return Date.now() < expirationTime
   } catch (error) {
-    console.error('Token verification failed:', error)
+    console.error('Token 验证失败:', error)
     return false
   }
 }
 
 function Homepage() {
-  // Modify login state initialization
+  // 修改登录状态初始化
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const navigate = useNavigate()
-  // Add useEffect for token check
+  // 添加 useEffect 进行 token 检查
   useEffect(() => {
     const isValidToken = checkToken()
     setIsLoggedIn(isValidToken)
 
-    // Optional: Add periodic check
+    // 可选：添加定时检查
     const checkInterval = setInterval(() => {
       const isStillValid = checkToken()
       if (!isStillValid && isLoggedIn) {
         setIsLoggedIn(false)
       }
-    }, 60000) // Check every minute
+    }, 60000) // 每分钟检查一次
 
     return () => clearInterval(checkInterval)
   }, [])
 
-  // Add state management
+  // 添加状态管理
   const [displayCount, setDisplayCount] = useState(10)
   const [sortField, setSortField] = useState<'saleDate' | 'age' | 'odometer'>('saleDate')
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc')
@@ -117,7 +117,7 @@ function Homepage() {
       .map(r => r.model))]
   }, [records, selectedMake])
 
-  // Add option calculation logic
+  // 添加选项计算逻辑
   const options = useMemo(() => {
     if (!records) return {
       makes: [],
@@ -216,7 +216,7 @@ function Homepage() {
   // Handle load more
   const handleLoadMore = () => {
     if (!isLoggedIn) {
-      // If not logged in, navigate to login page
+      // 如果未登录，导航到登录页面
       navigate('/login')
       return
     }
@@ -224,7 +224,7 @@ function Homepage() {
   }
 
   const handleApplyFilters = () => {
-    // No need to manually trigger request, useSWR will handle it
+    // 不需要手动触发请求，useSWR 会自动处理
     setDisplayCount(10)
   }
 
@@ -251,18 +251,18 @@ function Homepage() {
     setSelectedFeatures('')
   }
 
-  // Add average calculation
+  // 添加平均值计算
   const averages = useMemo(() => {
     if (!records || records.length === 0) return { avgKm: 0, avgAge: { years: 0, months: 0 } }
 
-    // Calculate average mileage
+    // 计算平均里程
     const totalKm = records.reduce((sum, record) => {
       const km = parseInt(record.odometer.toString().replace(/,/g, ''), 10)
       return sum + km
     }, 0)
     const avgKm = Math.round(totalKm / records.length)
 
-    // Calculate average age
+    // 计算平均年龄
     const currentYear = new Date().getFullYear()
     const totalMonths = records.reduce((sum, record) => {
       const monthsDiff = (currentYear - record.year) * 12
@@ -278,20 +278,20 @@ function Homepage() {
     }
   }, [records])
 
-  // Loading state check
+  // 加载状态检查
   if (isLoading) {
     return (
       <div className="min-h-screen bg-[#001219] flex items-center justify-center">
-        <div className="text-white text-xl">Loading...</div>
+        <div className="text-white text-xl">加载中...</div>
       </div>
     )
   }
 
-  // Handle error state
+  // 处理错误状态
   if (error) {
     return (
       <div className="min-h-screen bg-[#001219] flex items-center justify-center">
-        <div className="text-red-500 text-xl">Loading failed, please try again later</div>
+        <div className="text-red-500 text-xl">加载失败，请稍后重试</div>
       </div>
     )
   }
@@ -303,7 +303,7 @@ function Homepage() {
         <div className=" -mx-[max(0px,calc((100%-72rem)/2))] px-[max(0px,calc((100%-72rem)/2))]">
           <div className="bg-gray-100 p-4 rounded-lg mb-6 text-gray-900">
             <div className="flex flex-col gap-4">
-              {/* Filter row - changed to mobile 2 columns */}
+              {/* 筛选器第一行 - 改为移动端2列 */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <select
                   className="p-2 border rounded"
@@ -321,7 +321,7 @@ function Homepage() {
                 <select
                   className="p-2 border rounded"
                   value={selectedModel}
-                  onChange={(e) => setSelectedModel(e.target.value)}
+                  onChange={}
                 >
                   <option value="">All Models</option>
                   {availableModels.map(model => (
@@ -351,7 +351,7 @@ function Homepage() {
                 </select>
               </div>
 
-              {/* Filter row - changed to mobile 2 columns */}
+              {/* 筛选器第二行 - 改为移动端2列 */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <select
                   className="p-2 border rounded"
@@ -396,7 +396,7 @@ function Homepage() {
                 </select>
               </div>
 
-              {/* Show/hide more filters button */}
+              {/* 显示/隐藏更多筛选器的按钮 */}
               <button
                 className="text-blue-500 hover:text-blue-700 underline"
                 onClick={() => setShowMoreFilters(!showMoreFilters)}
@@ -404,7 +404,7 @@ function Homepage() {
                 {showMoreFilters ? 'Show less filters' : 'Show more filters'}
               </button>
 
-              {/* More filter options */}
+              {/* 更多筛选器选项 */}
               {showMoreFilters && (
                 <>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -414,7 +414,7 @@ function Homepage() {
                       onChange={(e) => setSelectedBadges(e.target.value)}
                     >
                       <option value="">Badges</option>
-                      {/* Add options */}
+                      {/* 添加选项 */}
                     </select>
                     <select
                       className="p-2 border rounded"
@@ -422,7 +422,7 @@ function Homepage() {
                       onChange={(e) => setSelectedBodyType(e.target.value)}
                     >
                       <option value="">Body Type</option>
-                      {/* Add options */}
+                      {/* 添加选项 */}
                     </select>
                     <select
                       className="p-2 border rounded"
@@ -430,7 +430,7 @@ function Homepage() {
                       onChange={(e) => setSelectedBodyTypeConfig(e.target.value)}
                     >
                       <option value="">Body Type Config</option>
-                      {/* Add options */}
+                      {/* 添加选项 */}
                     </select>
                     <select
                       className="p-2 border rounded"
@@ -438,7 +438,7 @@ function Homepage() {
                       onChange={(e) => setSelectedFuelType(e.target.value)}
                     >
                       <option value="">Fuel Type</option>
-                      {/* Add options */}
+                      {/* 添加选项 */}
                     </select>
                   </div>
 
@@ -449,7 +449,7 @@ function Homepage() {
                       onChange={(e) => setSelectedTransmission(e.target.value)}
                     >
                       <option value="">Transmission</option>
-                      {/* Add options */}
+                      {/* 添加选项 */}
                     </select>
                     <select
                       className="p-2 border rounded"
@@ -457,7 +457,7 @@ function Homepage() {
                       onChange={(e) => setSelectedEngine(e.target.value)}
                     >
                       <option value="">Engine</option>
-                      {/* Add options */}
+                      {/* 添加选项 */}
                     </select>
                     <select
                       className="p-2 border rounded"
@@ -465,7 +465,7 @@ function Homepage() {
                       onChange={(e) => setSelectedCylinders(e.target.value)}
                     >
                       <option value="">Cylinders</option>
-                      {/* Add options */}
+                      {/* 添加选项 */}
                     </select>
                     <select
                       className="p-2 border rounded"
@@ -473,7 +473,7 @@ function Homepage() {
                       onChange={(e) => setSelectedDivision(e.target.value)}
                     >
                       <option value="">Division</option>
-                      {/* Add options */}
+                      {/* 添加选项 */}
                     </select>
                   </div>
 
@@ -484,7 +484,7 @@ function Homepage() {
                       onChange={(e) => setSelectedDrive(e.target.value)}
                     >
                       <option value="">Drive</option>
-                      {/* Add options */}
+                      {/* 添加选项 */}
                     </select>
                     <select
                       className="p-2 border rounded"
@@ -492,7 +492,7 @@ function Homepage() {
                       onChange={(e) => setSelectedSeat(e.target.value)}
                     >
                       <option value="">Seat</option>
-                      {/* Add options */}
+                      {/* 添加选项 */}
                     </select>
                     <select
                       className="p-2 border rounded"
@@ -500,11 +500,11 @@ function Homepage() {
                       onChange={(e) => setSelectedDoors(e.target.value)}
                     >
                       <option value="">Doors</option>
-                      {/* Add options */}
+                      {/* 添加选项 */}
                     </select>
                   </div>
 
-                  {/* Feature search input */}
+                  {/* 特征搜索输入框 */}
                   <input
                     type="text"
                     className="p-2 border rounded w-full"
@@ -516,7 +516,7 @@ function Homepage() {
               )}
             </div>
 
-            {/* Button group responsive layout */}
+            {/* 按钮组响应式布局 */}
             <div className="flex flex-col sm:flex-row justify-between items-center mt-4 gap-2">
               <button
                 className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
@@ -533,7 +533,7 @@ function Homepage() {
             </div>
           </div>
 
-          {/* Statistics responsive layout */}
+          {/* 统计信息响应式布局 */}
           <div className="flex flex-col sm:flex-row justify-between items-center p-4 rounded-lg mb-6 space-y-2 sm:space-y-0">
             <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
               <p>Records: <span className="font-bold">{records?.length || 0}</span></p>
@@ -566,7 +566,7 @@ function Homepage() {
           </div>
         </div>
 
-        {/* Table container with horizontal scrolling */}
+        {/* 表格容器添加水平滚动 */}
         <div className="bg-gray-100 rounded-lg overflow-x-auto text-gray-900">
           <div className="min-w-[1000px]">
             <table className="table-auto w-full text-left">

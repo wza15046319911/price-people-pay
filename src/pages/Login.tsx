@@ -1,25 +1,22 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import axios from 'axios'
+import { useAuth } from '../contexts/AuthContext'
+import { login as loginService } from '../services/login'
 
 function Login() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const navigate = useNavigate()
+  const { login } = useAuth()
 
   const handleLogin = async () => {
     try {
       setError('')
-      const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/login`, {
-        username,
-        password
-      })
+      const response = await loginService(username, password);
       
-      // 存储token
-      localStorage.setItem('token', response.data.token)
+      login(response.data.token)
       
-      // 登录成功后跳转到首页
       navigate('/home')
     } catch (err) {
       setError('Login failed, please check your username and password')
