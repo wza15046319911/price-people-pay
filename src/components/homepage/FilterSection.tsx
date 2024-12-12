@@ -167,7 +167,7 @@ function FilterSection({ records, formData, onFilterChange, handleApplyFilters }
                             onChange={(e) => handleInputChange('badges', e.target.value)}
                         >
                             <option value="">Badges</option>
-                            {/* 选项内 */}
+                            {/* Options */}
                         </select>
                         <input
                             type="text"

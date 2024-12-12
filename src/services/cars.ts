@@ -5,7 +5,7 @@ export async function fetchCars(url: string) {
         const response = await axios.get(url)
         return response.data
     } catch (error) {
-        throw new Error('获取车辆数据失败')
+        throw new Error('Failed to fetch cars')
     }
 }
 

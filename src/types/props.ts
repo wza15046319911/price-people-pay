@@ -1,7 +1,7 @@
 import { CarRecord } from "./car"
 
 export interface FilterFormData {
-    // 基础筛选
+    // Basic Filters
     make: string
     model: string
     year: string
@@ -11,25 +11,25 @@ export interface FilterFormData {
     date: string
     category: string
 
-    // 车辆特征
+    // Vehicle Characteristics
     badges: string
     bodyType: string
     bodyTypeConfig: string
     fuelType: string
     transmission: string
 
-    // 发动机相关
+    // Engine Related
     engine: string
     cylinders: string
 
-    // 其他规格
-    division: string    // 部门/分区
-    drive: string      // 驱动方式
-    seat: string       // 座位数
-    doors: string      // 车门数
+    // Other Specifications
+    division: string    // Division/Section
+    drive: string      // Drive Type
+    seat: string       // Number of Seats
+    doors: string      // Number of Doors
 
-    // 额外功能
-    features: string   // 特殊功能/配置
+    // Additional Features
+    features: string   // Special Features/Configuration
 }
 
 export interface StatsSectionProps {
@@ -42,7 +42,7 @@ export interface StatsSectionProps {
 
 export interface FilterSectionProps {
     records: CarRecord[] | undefined
-    formData: FilterFormData  // 添加formData作为prop
-    onFilterChange: (formData: FilterFormData) => void  // 添加状态更新函数
+    formData: FilterFormData  // Form data as prop
+    onFilterChange: (formData: FilterFormData) => void  // State update function
     handleApplyFilters: () => void
 }

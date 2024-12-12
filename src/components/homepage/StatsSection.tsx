@@ -1,37 +1,15 @@
 import { useMemo } from 'react';
 import { StatsSectionProps } from '../../types/props';
+import { calculateAverages } from '../../utils/util';
 
-
-function StatsSection({
+const StatsSection: React.FC<StatsSectionProps> = ({
     records,
     sortField,
     setSortField,
     sortOrder,
     setSortOrder
-}: StatsSectionProps) {
-    const averages = useMemo(() => {
-        if (!records || records.length === 0) return { avgKm: 0, avgAge: { years: 0, months: 0 } }
-
-        const totalKm = records.reduce((sum, record) => {
-            const km = parseInt(record.odometer.toString().replace(/,/g, ''), 10)
-            return sum + km
-        }, 0)
-        const avgKm = Math.round(totalKm / records.length)
-
-        const currentYear = new Date().getFullYear()
-        const totalMonths = records.reduce((sum, record) => {
-            const monthsDiff = (currentYear - record.year) * 12
-            return sum + monthsDiff
-        }, 0)
-        const avgMonths = Math.round(totalMonths / records.length)
-        const avgYears = Math.floor(avgMonths / 12)
-        const remainingMonths = avgMonths % 12
-
-        return {
-            avgKm,
-            avgAge: { years: avgYears, months: remainingMonths }
-        }
-    }, [records])
+}) => {
+    const averages = useMemo(() => calculateAverages(records || []), [records])
     return (
         <div className="flex flex-col sm:flex-row justify-between items-center p-4 rounded-lg mb-6 space-y-2 sm:space-y-0">
             <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
@@ -66,4 +44,4 @@ function StatsSection({
     )
 }
 
-export default StatsSection 
+export default StatsSection

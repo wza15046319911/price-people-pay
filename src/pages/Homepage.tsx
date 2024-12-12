@@ -45,7 +45,7 @@ function Homepage() {
     features: ''
   })
 
-  // 处理筛选更新
+  // Handle filter updates
   const handleFilterChange = (newFilterData: FilterFormData) => {
     setFilterData(newFilterData)
   }
