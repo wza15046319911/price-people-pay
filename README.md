@@ -30,7 +30,7 @@ A modern, mobile-friendly web application built with React, TypeScript, and Vite
 
 1. Clone the repository:
 ```bash
-git clone [your-repository-url]
+git clone https://github.com/wza15046319911/price-people-pay.git
 cd price-people-pay
 ```
 
