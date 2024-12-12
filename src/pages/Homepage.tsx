@@ -139,7 +139,7 @@ function Homepage() {
 
   const mainContent = (
     <div className="max-w-6xl mx-auto m-16">
-      <h1 className="text-3xl font-bold mb-6 text-center px-4">Used car sales for Audi A5</h1>
+      <h1 className="text-3xl font-bold mb-6 text-center px-4">Used car sales</h1>
       <div className="-mx-[max(0px,calc((100%-72rem)/2))] px-[max(0px,calc((100%-72rem)/2))]">
         <FilterSection
           records={processedRecords}
