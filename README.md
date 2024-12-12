@@ -80,9 +80,6 @@ This project is configured for deployment on Vercel. You can deploy your own ins
 vercel
 ```
 
-## 📝 License
-
-[Your License Here]
 
 ## 👥 Contributing
 
