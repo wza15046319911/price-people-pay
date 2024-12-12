@@ -1,18 +1,15 @@
-import useSWR from 'swr'
 import { useState, useMemo, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import DataTable from '../components/homepage/DataTable';
 import StatsSection from '../components/homepage/StatsSection';
 import FilterSection from '../components/homepage/FilterSection';
-import { CarRecord } from '../types/car';
 import { FilterFormData } from '../types/props';
 import { useAuth } from '../contexts/AuthContext';
-import { fetchCars } from '../services/cars';
+import { useCars } from '../hooks/useCars'
 import Loading from '../components/homepage/Loading';
 import Error from '../components/homepage/Error';
 
 function Homepage() {
-  // 修改登录状态初始化
   const { isLoggedIn } = useAuth()
   const navigate = useNavigate()
   useEffect(() => {
@@ -53,12 +50,7 @@ function Homepage() {
     setFilterData(newFilterData)
   }
 
-  const { data: records, error, isLoading } = useSWR<CarRecord[]>(
-    `/car?maker=${filterData.make}&model=${filterData.model}&year=${filterData.year}`,
-    fetchCars
-  )
-
-
+  const { records, error, isLoading } = useCars(filterData)
 
   // Combine filtering, sorting, and pagination
   const processedRecords = useMemo(() => {
@@ -180,7 +172,7 @@ function Homepage() {
   return (
     <div className="relative">
       {mainContent}
-      
+
       {isLoading && (
         <Loading />
       )}
