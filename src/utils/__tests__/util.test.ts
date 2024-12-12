@@ -1,3 +1,4 @@
+import { describe, expect, it } from '@jest/globals';
 import { calculateAverages } from '../util';
 
 describe('calculateAverages', () => {
@@ -26,13 +27,13 @@ describe('calculateAverages', () => {
     it('should handle comma-separated odometer values', () => {
         const currentYear = new Date().getFullYear();
         const records = [{
-            odometer: '100,000',
+            odometer: '50,000',
             year: currentYear - 1
         }];
 
         const result = calculateAverages(records);
         expect(result).toEqual({
-            avgKm: 100000,
+            avgKm: 50000,
             avgAge: { years: 1, months: 0 }
         });
     });
@@ -45,15 +46,15 @@ describe('calculateAverages', () => {
                 year: currentYear - 2
             },
             {
-                odometer: '100000',
-                year: currentYear - 4
+                odometer: '30000',
+                year: currentYear - 1
             }
         ];
 
         const result = calculateAverages(records);
         expect(result).toEqual({
-            avgKm: 75000,
-            avgAge: { years: 3, months: 0 }
+            avgKm: 40000,
+            avgAge: { years: 1, months: 6 }
         });
     });
 });
